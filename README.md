@@ -17,12 +17,20 @@ Python GUI for assembling adsorbate-on-metal-surface VASP job folders using ASE.
 
 Use a Python virtual environment. This is the supported install path and is more reliable than a bundled executable for scientific Python packages such as ASE, Open Babel, and xTB.
 
-Clone the repository:
+If you have Git, clone the repository:
 
 ```bash
-git clone https://github.com/<your-user>/<your-repo>.git
-cd <your-repo>
+git clone https://github.com/dhaneeshk/DFT_job_submission_workflow.git
+cd DFT_job_submission_workflow
 ```
+
+If you do not have Git, download the files as a ZIP:
+
+1. Open `https://github.com/dhaneeshk/DFT_job_submission_workflow` in a browser.
+2. Click the green `Code` button.
+3. Click `Download ZIP`.
+4. Extract the ZIP somewhere convenient.
+5. Open a terminal in the extracted folder.
 
 Windows without PowerShell activation:
 
@@ -57,25 +65,6 @@ dft-workflow
 ```
 
 On Windows, replace `source .venv/bin/activate` with `.\.venv\Scripts\Activate.ps1`, or run `.\.venv\Scripts\dft-workflow.exe` directly.
-
-## Optional Experimental Windows Executable
-
-The recommended way to run this app is from a virtual environment. A PyInstaller executable can be built for local testing, but it is experimental because ASE and Open Babel use plugin/data-file discovery that can require extra PyInstaller hidden imports when dependencies change.
-
-If you still want to test a local executable:
-
-```bat
-setup_env.bat
-build_exe.bat
-```
-
-The executable will be created at:
-
-```text
-dist\DFTWorkflow\DFTWorkflow.exe
-```
-
-The executable will only be suitable for similar Windows machines. If it fails to load molecule formats that work in the virtual environment, use the virtual environment install instead.
 
 ## External Tools
 
@@ -138,8 +127,6 @@ Build source/wheel distributions:
 ```bash
 python -m build
 ```
-
-Executable builds are optional and not required for normal users.
 
 ## Before Publishing To GitHub
 
