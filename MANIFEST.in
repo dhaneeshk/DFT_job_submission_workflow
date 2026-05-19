@@ -1,0 +1,5 @@
+include README.md
+include LICENSE
+include dft_workflow/Templates/INCAR
+include dft_workflow/Templates/KPOINTS
+include dft_workflow/Templates/sub

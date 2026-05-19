@@ -1,0 +1,39 @@
+!start
+ISTART = 0
+ICHARG = 2
+
+!prec
+ISMEAR = 0 
+SIGMA = 0.05
+LREAL = A
+PREC = N
+EDIFF  = 1e-6
+ENCUT = 400.000 
+
+!relax
+NSW = 10000           ! HOW MANY STEPS BEFORE WE QUIT! 
+IBRION = 3       
+POTIM = 0
+IOPT = 7
+EDIFFG = -0.02        ! STOPPING CRITERION
+
+!algo
+NELMIN = 4
+NELM = 100
+ALGO = f
+
+!parallel
+IRMMD = 4
+NSIM = 6
+NPAR = 3
+
+!output
+LCHARG = F
+LWAVE = F
+LELF = F
+
+!method
+!SYMPREC = 5E-3
+
+LVDW = T
+IVDW = 11

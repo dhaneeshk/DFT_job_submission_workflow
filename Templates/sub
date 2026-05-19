@@ -1,0 +1,21 @@
+#!/bin/bash -l
+##SBATCH -o ./tjob.out.%j
+##SBATCH -e ./tjob.err.%j
+##SBATCH -D ./
+#SBATCH -J TestRun         
+#SBATCH --nodes=4          
+#SBATCH --mem=236000
+#SBATCH --ntasks-per-node=72
+#SBATCH --ntasks-per-core=1
+#SBATCH --mail-type=all
+#SBATCH --mail-user=your.email@example.com
+#SBATCH --time=00:10:00
+
+# modules to load/environment variables to set
+module purge
+module load intel/19.1.2 impi/2019.8 mkl/2020.2
+export LD_LIBRARY_PATH=$INTEL_HOME/mkl/lib/intel64:$LD_LIBRARY_PATH
+
+# command to run
+
+srun -n 288 /path/to/vasp_gam | tee sout
