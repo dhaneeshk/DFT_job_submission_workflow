@@ -3,6 +3,7 @@ from pathlib import Path
 import pytest
 
 from dft_workflow.assembly import AdsorbatePlacement, assemble_adsorbate_on_slab, assemble_adsorbates_on_slab
+from dft_workflow.config import load_xtb_command
 from dft_workflow.molecule_io import load_molecule
 from dft_workflow.relaxation import (
     _ase_atoms_to_openbabel_mol,
@@ -16,6 +17,17 @@ from dft_workflow.vasp_export import write_job_folder
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_xtb_config_defaults_to_path_command(tmp_path):
+    assert load_xtb_command(tmp_path / "missing.ini") == "xtb"
+
+
+def test_xtb_config_reads_custom_executable(tmp_path):
+    config = tmp_path / "dft_workflow_config.ini"
+    config.write_text("[executables]\nxtb = C:\\tools\\xtb\\xtb.exe\n", encoding="utf-8")
+
+    assert load_xtb_command(config) == "C:\\tools\\xtb\\xtb.exe"
 
 
 def test_xyz_loads_example_molecule():

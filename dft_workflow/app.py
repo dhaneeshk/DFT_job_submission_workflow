@@ -35,6 +35,7 @@ from PySide6.QtWidgets import (
 )
 
 from dft_workflow.assembly import AdsorbatePlacement, Assembly, assemble_adsorbates_on_slab
+from dft_workflow.config import load_xtb_command
 from dft_workflow.molecule_io import load_molecule
 from dft_workflow.relaxation import run_gfnff_relaxation, run_mmff_relaxation, run_uff_relaxation, xtb_is_available
 from dft_workflow.surfaces import build_fcc_slab
@@ -76,6 +77,7 @@ class RelaxationWorker(QObject):
                 self.placements,
                 self.slab,
                 max_atoms=self.parameters["max_atoms"],
+                xtb_command=self.parameters["xtb_command"],
                 timeout_seconds=self.parameters["timeout_seconds"],
                 stages=self.parameters["xtb_stages"],
                 steps_per_stage=self.parameters["xtb_steps_per_stage"],
@@ -676,8 +678,11 @@ class MainWindow(QMainWindow):
         self._clear_relaxation_trajectory()
         self._append_relaxation_log(f"Starting relaxation: {method}")
         parameters = self._relaxation_parameters()
-        if method == "GFN-FF via xTB" and not xtb_is_available():
-            self._append_relaxation_log("xTB executable not found in PATH. Try Open Babel UFF/MMFF94 or add xtb to PATH.")
+        if method == "GFN-FF via xTB" and not xtb_is_available(parameters["xtb_command"]):
+            self._append_relaxation_log(
+                "xTB executable not found. Set xtb in dft_workflow_config.ini, add it to PATH, "
+                "or use Open Babel UFF/MMFF94."
+            )
             return
 
         self._set_relaxation_running(True)
@@ -726,6 +731,7 @@ class MainWindow(QMainWindow):
     def _relaxation_parameters(self) -> dict:
         return {
             "max_atoms": self.relaxation_max_atoms_input.value(),
+            "xtb_command": load_xtb_command(),
             "xtb_stages": self.xtb_stages_input.value(),
             "xtb_steps_per_stage": self.xtb_steps_input.value(),
             "timeout_seconds": self.xtb_timeout_input.value(),

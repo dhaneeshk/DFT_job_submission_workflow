@@ -70,12 +70,38 @@ On Windows, replace `source .venv/bin/activate` with `.\.venv\Scripts\Activate.p
 
 ### xTB
 
-`GFN-FF via xTB` requires the external `xtb` executable to be available on `PATH`.
+`GFN-FF via xTB` requires the external `xtb` executable. xTB is not installed by this app.
+
+Download/install options:
+
+- xTB releases: `https://github.com/grimme-lab/xtb/releases`
+- xTB setup documentation: `https://xtb-docs.readthedocs.io/en/latest/setup.html`
+- Conda install:
+
+```bash
+conda install -c conda-forge xtb
+```
+
+If xTB is available on `PATH`, leave `dft_workflow_config.ini` unchanged.
 
 Check with:
 
 ```bash
 xtb --version
+```
+
+If `xtb --version` does not work, edit `dft_workflow_config.ini` in the project folder and set the full executable path:
+
+```ini
+[executables]
+xtb = C:\Users\your-name\software\xtb\bin\xtb.exe
+```
+
+Linux/macOS example:
+
+```ini
+[executables]
+xtb = /home/your-name/software/xtb/bin/xtb
 ```
 
 If xTB is unavailable, use `MMFF94 (Open Babel)` or `UFF (Open Babel)`.

@@ -38,7 +38,7 @@ class RelaxationResult:
 
 
 def xtb_is_available(command: str = "xtb") -> bool:
-    return shutil.which(command) is not None
+    return shutil.which(command.strip()) is not None if command.strip() else False
 
 
 def top_layer_indices(slab: Atoms, tolerance: float = TOP_LAYER_TOLERANCE) -> list[int]:
@@ -84,8 +84,9 @@ def run_gfnff_relaxation(
     steps_per_stage: int = DEFAULT_GFNFF_STEPS_PER_STAGE,
 ) -> RelaxationResult:
     log = ["Method: GFN-FF via xTB"]
+    log.append(f"xTB command: {xtb_command}")
     if not xtb_is_available(xtb_command):
-        return RelaxationResult(False, "xTB executable not found", log + ["xTB executable not found in PATH."], [], [])
+        return RelaxationResult(False, "xTB executable not found", log + ["xTB executable not found."], [], [])
 
     relaxation_system, adsorbate_slices, fixed_indices = build_gfnff_relaxation_system(adsorbates, slab)
     log.append(f"Adsorbates: {sum(stop - start for start, stop in adsorbate_slices)} atoms")
