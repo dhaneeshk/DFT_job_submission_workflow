@@ -50,6 +50,8 @@ Windows PowerShell:
 powershell -ExecutionPolicy Bypass -File .\setup_env.ps1
 ```
 
+You only need to run setup once, unless you download a new version of the app.
+
 macOS/Linux terminal:
 
 ```bash
@@ -62,9 +64,11 @@ This creates a `.venv` folder and installs the required Python packages.
 
 Windows PowerShell:
 
-```powershell
-.\.venv\Scripts\dft-workflow.exe
+```bat
+run_gui.bat
 ```
+
+You can also double-click `run_gui.bat` from File Explorer after setup is complete.
 
 macOS/Linux terminal:
 
@@ -73,7 +77,7 @@ source .venv/bin/activate
 dft-workflow
 ```
 
-If you close the terminal and want to run the app again later, return to the project folder and run the command from this step again. You do not need to repeat the setup step unless you download a new version.
+If you close the terminal and want to run the app again later, return to the project folder and run the command from this step again. Windows users can normally just double-click `run_gui.bat`.
 
 ### Troubleshooting Installation
 
