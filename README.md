@@ -13,84 +13,116 @@ Python GUI for assembling adsorbate-on-metal-surface VASP job folders using ASE.
 - Relax adsorbates using `GFN-FF via xTB`, `MMFF94 (Open Babel)`, or `UFF (Open Babel)`.
 - Replay relaxation trajectories when frames are available.
 
-## Recommended Install From GitHub
+## Installation
 
-Use a Python virtual environment. This is the supported install path and is more reliable than a bundled executable for scientific Python packages such as ASE, Open Babel, and xTB.
+This app is meant to be run from a Python virtual environment. A virtual environment is a local Python folder that keeps this app's packages separate from the rest of your computer.
 
-If you have Git, clone the repository:
+### 1. Install Python
+
+Install Python 3.10, 3.11, or 3.12 from `https://www.python.org/downloads/`.
+
+On Windows, enable `Add python.exe to PATH` during installation if the installer offers that option.
+
+### 2. Download This App
+
+If you do not use Git:
+
+1. Open `https://github.com/dhaneeshk/DFT_job_submission_workflow` in a browser.
+2. Click the green `Code` button.
+3. Click `Download ZIP`.
+4. Extract the ZIP somewhere convenient, such as your Desktop or Documents folder.
+5. Open the extracted folder.
+
+On Windows 11, right-click inside the folder and choose `Open in Terminal`. On older Windows versions, open PowerShell and use `cd` to move into the extracted folder before running the setup command.
+
+If you use Git:
 
 ```bash
 git clone https://github.com/dhaneeshk/DFT_job_submission_workflow.git
 cd DFT_job_submission_workflow
 ```
 
-If you do not have Git, download the files as a ZIP:
-
-1. Open `https://github.com/dhaneeshk/DFT_job_submission_workflow` in a browser.
-2. Click the green `Code` button.
-3. Click `Download ZIP`.
-4. Extract the ZIP somewhere convenient.
-5. Open a terminal in the extracted folder.
-
-Windows without PowerShell activation:
-
-```bat
-setup_env.bat
-run_gui.bat
-```
+### 3. Set Up The Python Environment
 
 Windows PowerShell:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\setup_env.ps1
-.\.venv\Scripts\dft-workflow.exe
 ```
 
-Linux/macOS:
+macOS/Linux terminal:
 
 ```bash
 ./setup_env.sh
-source .venv/bin/activate
-dft-workflow
 ```
 
-Manual setup:
+This creates a `.venv` folder and installs the required Python packages.
+
+### 4. Start The App
+
+Windows PowerShell:
+
+```powershell
+.\.venv\Scripts\dft-workflow.exe
+```
+
+macOS/Linux terminal:
 
 ```bash
-python -m venv .venv
 source .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -e .
 dft-workflow
 ```
 
-On Windows, replace `source .venv/bin/activate` with `.\.venv\Scripts\Activate.ps1`, or run `.\.venv\Scripts\dft-workflow.exe` directly.
+If you close the terminal and want to run the app again later, return to the project folder and run the command from this step again. You do not need to repeat the setup step unless you download a new version.
+
+### Troubleshooting Installation
+
+If `python` is not recognized, install Python again and make sure it is added to `PATH`, or use the Python Launcher on Windows:
+
+```powershell
+py -m venv .venv
+```
+
+If package installation fails, try updating pip manually:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install --upgrade pip
+```
 
 ## External Tools
 
 ### xTB
 
-`GFN-FF via xTB` requires the external `xtb` executable. xTB is not installed by this app.
+The `GFN-FF via xTB` relaxation method requires the external `xtb` program. xTB is not installed by this app.
 
-Download/install options:
+You can still use the app without xTB. If xTB is not installed, use `MMFF94 (Open Babel)` or `UFF (Open Babel)` in the relaxation menu.
+
+Where to get xTB:
 
 - xTB releases: `https://github.com/grimme-lab/xtb/releases`
 - xTB setup documentation: `https://xtb-docs.readthedocs.io/en/latest/setup.html`
-- Conda install:
+
+If you use conda, this is usually the easiest install command:
 
 ```bash
 conda install -c conda-forge xtb
 ```
 
-If xTB is available on `PATH`, leave `dft_workflow_config.ini` unchanged.
+After installing xTB, check whether your terminal can find it:
 
-Check with:
-
-```bash
+```powershell
 xtb --version
 ```
 
-If `xtb --version` does not work, edit `dft_workflow_config.ini` in the project folder and set the full executable path:
+If that command works, leave `dft_workflow_config.ini` unchanged.
+
+If that command does not work, you can tell this app exactly where xTB is installed:
+
+1. Open `dft_workflow_config.ini` in the project folder.
+2. Find the `[executables]` section.
+3. Set `xtb` to the full path of the xTB executable.
+
+Windows example:
 
 ```ini
 [executables]
@@ -104,7 +136,7 @@ Linux/macOS example:
 xtb = /home/your-name/software/xtb/bin/xtb
 ```
 
-If xTB is unavailable, use `MMFF94 (Open Babel)` or `UFF (Open Babel)`.
+Save the file, then restart the GUI.
 
 ### VASP POTCAR Files
 
