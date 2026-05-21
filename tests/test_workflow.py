@@ -37,6 +37,16 @@ def test_xyz_loads_example_molecule():
     assert molecule.get_chemical_symbols()[0] == "H"
 
 
+def test_contcar_named_xyz_loads_as_xyz(tmp_path):
+    xyz_file = tmp_path / "CONTCAR.xyz"
+    xyz_file.write_text("2\ncomment\nH 0 0 0\nH 0 0 0.74\n", encoding="utf-8")
+
+    molecule = load_molecule(xyz_file)
+
+    assert len(molecule) == 2
+    assert molecule.get_chemical_symbols() == ["H", "H"]
+
+
 def test_assembly_keeps_slab_cell_and_metal_last():
     molecule = load_molecule(ROOT / "Model_compound1_TPP_oOBA_freebase.xyz")
     slab = build_fcc_slab("Cu", "111", 2, 2, 2, 12.0)
@@ -74,6 +84,19 @@ def test_slab_can_include_bottom_vacuum():
 
     assert z_positions.min() == pytest.approx(bottom_vacuum)
     assert slab.cell.lengths()[2] - z_positions.max() == pytest.approx(top_vacuum)
+
+
+def test_fcc111_can_be_rectangular_for_even_y_size():
+    slab = build_fcc_slab("Cu", "111", 2, 4, 3, 12.0, orthogonal_111=True)
+
+    cell = slab.cell.array
+    assert abs(cell[0, 1]) < 1e-12
+    assert abs(cell[1, 0]) < 1e-12
+
+
+def test_fcc111_rectangular_requires_even_y_size():
+    with pytest.raises(ValueError, match="even Y size"):
+        build_fcc_slab("Cu", "111", 2, 3, 3, 12.0, orthogonal_111=True)
 
 
 def test_export_writes_expected_job_files(tmp_path):

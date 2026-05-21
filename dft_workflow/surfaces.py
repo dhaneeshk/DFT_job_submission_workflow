@@ -17,6 +17,7 @@ def build_fcc_slab(
     vacuum: float,
     lattice_constant: float | None = None,
     bottom_vacuum: float = 0.0,
+    orthogonal_111: bool = False,
 ) -> Atoms:
     if facet not in SUPPORTED_FACETS:
         raise ValueError(f"Unsupported facet '{facet}'. Choose from {', '.join(SUPPORTED_FACETS)}")
@@ -26,6 +27,10 @@ def build_fcc_slab(
         raise ValueError("Vacuum must be positive")
     if bottom_vacuum < 0:
         raise ValueError("Bottom vacuum cannot be negative")
+    if orthogonal_111 and facet != "111":
+        raise ValueError("Rectangular cell shape is only available for the 111 facet")
+    if orthogonal_111 and size_y % 2 != 0:
+        raise ValueError("Rectangular fcc(111) slabs require an even Y size. Try Y = 2, 4, 6, ...")
 
     kwargs = {
         "symbol": metal,
@@ -37,6 +42,7 @@ def build_fcc_slab(
         kwargs["a"] = lattice_constant
 
     if facet == "111":
+        kwargs["orthogonal"] = orthogonal_111
         slab = fcc111(**kwargs)
     elif facet == "100":
         slab = fcc100(**kwargs)

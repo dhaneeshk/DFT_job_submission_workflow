@@ -376,6 +376,8 @@ class MainWindow(QMainWindow):
         self.metal_input.addItems(["Cu", "Ag", "Au"])
         self.facet_input = QComboBox()
         self.facet_input.addItems(["111", "100", "110"])
+        self.cell_shape_input = QComboBox()
+        self.cell_shape_input.addItems(["Primitive/rhombic", "Rectangular/orthogonal"])
         self.size_x_input = self._spinbox(1, 20, 4)
         self.size_y_input = self._spinbox(1, 20, 4)
         self.layers_input = self._spinbox(1, 20, 3)
@@ -385,6 +387,7 @@ class MainWindow(QMainWindow):
         self.build_slab_button = QPushButton("Build Slab")
         surface_layout.addRow("Metal", self.metal_input)
         surface_layout.addRow("Facet", self.facet_input)
+        surface_layout.addRow("111 cell shape", self.cell_shape_input)
         surface_layout.addRow("Size X", self.size_x_input)
         surface_layout.addRow("Size Y", self.size_y_input)
         surface_layout.addRow("Layers", self.layers_input)
@@ -621,6 +624,7 @@ class MainWindow(QMainWindow):
                 self.vacuum_input.value(),
                 lattice,
                 self.bottom_vacuum_input.value(),
+                orthogonal_111=self.cell_shape_input.currentText().startswith("Rectangular"),
             )
             self._clear_relaxation_snapshot("Relaxation reset because the slab was rebuilt.")
             self._rebuild_assembly(refocus=False)

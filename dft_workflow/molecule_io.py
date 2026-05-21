@@ -6,7 +6,8 @@ from ase import Atoms
 from ase.io import read
 
 
-SUPPORTED_MOLECULE_FORMATS = {".xyz", ".sdf"}
+MOLECULE_FORMATS = {".xyz": "xyz", ".sdf": "sdf"}
+SUPPORTED_MOLECULE_FORMATS = set(MOLECULE_FORMATS)
 
 
 def load_molecule(path: str | Path) -> Atoms:
@@ -16,7 +17,7 @@ def load_molecule(path: str | Path) -> Atoms:
         supported = ", ".join(sorted(SUPPORTED_MOLECULE_FORMATS))
         raise ValueError(f"Unsupported molecule format '{suffix}'. Use one of: {supported}")
 
-    molecule = read(molecule_path)
+    molecule = read(molecule_path, format=MOLECULE_FORMATS[suffix])
     if not isinstance(molecule, Atoms):
         raise ValueError(f"Could not read a single molecule from {molecule_path}")
     if len(molecule) == 0:

@@ -121,6 +121,8 @@ This app does not bundle or generate licensed VASP pseudopotentials. It writes `
 
 The slab builder uses separate top and bottom vacuum values. `Top vacuum` is the empty space above the slab; `Bottom vacuum` lifts the bottom slab layer above `z=0`.
 
+For the `111` facet, the `111 cell shape` control selects either the primitive rhombic surface cell or a rectangular/orthogonal cell. Rectangular `111` slabs require an even `Size Y` value, such as `2`, `4`, or `6`.
+
 The relaxation panel can relax adsorbates with `GFN-FF via xTB`, `MMFF94 (Open Babel)`, or `UFF (Open Babel)`. Relaxation runs in a background thread so the GUI remains responsive. GFN-FF uses all adsorbates plus the top slab layer with the top layer fixed. MMFF94 and UFF use Open Babel; by default they relax adsorbates only, but `Include top surface layer` can be enabled to attempt the fixed top-layer subsystem.
 
 ## Templates
